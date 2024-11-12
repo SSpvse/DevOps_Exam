@@ -1,0 +1,53 @@
+# boto3 install through pip
+# workingdir: ./smaLambdaSt
+# run: sam deploy --allow-changeset  --no-fail-on-no-changeset
+
+#change for actions
+name: Deploy SAM Application
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the code
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Step 2: Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-1  # Update if you use a different AWS region
+
+      # Step 3: Install SAM CLI
+      - name: Install SAM CLI
+        run: |
+          sudo apt-get install unzip -y
+          curl "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip" -Lo "sam-cli.zip"
+          unzip sam-cli.zip -d sam-installation
+          sudo ./sam-installation/install
+
+      # Step 4: Install Python dependencies (boto3 and any other required packages)
+      - name: Install Python dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install boto3 -t ./samLambdaSt  # Installs boto3 to the specified SAM working directory
+
+      # Step 5: Build the SAM application
+      - name: Build SAM Application
+        working-directory: ./samLambdaSt
+        run: sam build
+
+      # Step 6: Deploy the SAM application
+      - name: Deploy SAM Application
+        working-directory: ./samLambdaSt
+        run: sam deploy --no-confirm-changeset --stack-name samLambdaSt --capabilities CAPABILITY_IAM --no-fail-on-empty-changeset
+
