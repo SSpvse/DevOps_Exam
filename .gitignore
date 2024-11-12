@@ -7,3 +7,9 @@
 /dataSources/
 /dataSources.local.xml
 .idea/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+.aws-sam

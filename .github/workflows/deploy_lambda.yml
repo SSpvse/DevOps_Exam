@@ -30,11 +30,17 @@ jobs:
       # Step 3: Install SAM CLI
       - name: Install SAM CLI
         run: |
-          sudo apt-get install unzip -y
-          curl "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip" -Lo "sam-cli.zip"
-          unzip sam-cli.zip -d sam-installation
-          sudo ./sam-installation/install
-
+          if same --versions > /dev/null 2>&1; then
+            echo "AWS SAM CLI is already installed. Updating..."
+            curl "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip" -Lo "sam-cli.zip"
+            unzip -o sam-cli.zip -d sam-installation
+            sudo ./sam-installation/install --update
+          else
+            echo "Installing AWS SAM CLI..."
+            curl "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip" -Lo "sam-cli.zip"
+            unzip sam-cli.zip -d sam-installation
+            sudo ./sam-installation/install
+          fi
       # Step 4: Install Python dependencies (boto3 and any other required packages)
       - name: Install Python dependencies
         run: |

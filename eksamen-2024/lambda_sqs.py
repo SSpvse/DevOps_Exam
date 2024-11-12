@@ -10,7 +10,7 @@ bedrock_client = boto3.client("bedrock-runtime", region_name="us-east-1")
 s3_client = boto3.client("s3")
 
 MODEL_ID = "amazon.titan-image-generator-v1"
-BUCKET_NAME =  os.environ["BUCKET_NAME"]
+BUCKET_NAME =  os.environ["pgr301-couch-explorers"]
 
 def lambda_handler(event, context):
     # Loop through all SQS records in the event
