@@ -1,0 +1,86 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM Template for image generation
+
+Resources:
+  # Define the API Gateway
+  ApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod  # Define the stage name for your API
+      Cors:             # Optional CORS configuration
+        AllowMethods: "'OPTIONS,POST,GET'"
+        AllowHeaders: "'Content-Type'"
+        AllowOrigin: "'*'"
+
+  # IAM Role for the Lambda function
+  ImageGenerationRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+  # S3 Policy for accessing S3 bucket
+  S3Policy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: S3AccessPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:PutObject
+              - s3:GetObject
+            Resource: !Sub 'arn:aws:s3:::pgr301-couch-explorers/*'
+      Roles:
+        - !Ref ImageGenerationRole  # Attach this policy to the role
+
+  # Bedrock Policy for invoking Bedrock models
+  BedrockPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: BedrockAccessPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - bedrock:InvokeModel
+            Resource: '*'
+      Roles:
+        - !Ref ImageGenerationRole  # Attach this policy to the role
+
+  # Lambda Function for image generation
+  ImageGeneratorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: generate_image.lambda_handler
+      Runtime: python3.9
+      Timeout: 600
+      MemorySize: 512
+      Role: !GetAtt ImageGenerationRole.Arn  # Reference the role here, but policies are attached separately
+      Environment:
+        Variables:
+          BUCKET_NAME: pgr301-couch-explorers
+          CANDIDATE_NUMBER: 71
+      Events:
+        ApiEvent:
+          Type: Api  # Link this function to the API Gateway event source
+          Properties:
+            RestApiId: !Ref ApiGateway  # Reference to the API Gateway defined above
+            Path: /generate-image         # Define the path for this endpoint
+            Method: POST                  # HTTP method for this endpoint
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/Prod/generate-image/"
