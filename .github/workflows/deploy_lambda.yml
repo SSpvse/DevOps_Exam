@@ -1,8 +1,3 @@
-# boto3 install through pip
-# workingdir: ./smaLambdaSt
-# run: sam deploy --allow-changeset  --no-fail-on-no-changeset
-
-#change for actions
 name: Deploy SAM Application
 
 on:
@@ -34,19 +29,19 @@ jobs:
           curl "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip" -Lo "sam-cli.zip"
           unzip sam-cli.zip -d sam-installation
           sudo ./sam-installation/install --update  # Use --update to update the existing installation
+
       # Step 4: Install Python dependencies (boto3 and any other required packages)
       - name: Install Python dependencies
         run: |
           python3 -m pip install --upgrade pip
-          python3 -m pip install boto3 -t ./samLambdaSt  # Installs boto3 to the specified SAM working directory
+          python3 -m pip install boto3 -t ./eksamen-2024/samLambdaSt  # Installs boto3 to the specified SAM working directory
 
       # Step 5: Build the SAM application
       - name: Build SAM Application
-        working-directory: ./samLambdaSt
+        working-directory: ./eksamen-2024/samLambdaSt  # Ensure you're in the correct folder
         run: sam build
 
       # Step 6: Deploy the SAM application
       - name: Deploy SAM Application
-        working-directory: ./samLambdaSt
+        working-directory: ./eksamen-2024/samLambdaSt  # Ensure you're in the correct folder
         run: sam deploy --no-confirm-changeset --stack-name samLambdaSt --capabilities CAPABILITY_IAM --no-fail-on-empty-changeset
-
