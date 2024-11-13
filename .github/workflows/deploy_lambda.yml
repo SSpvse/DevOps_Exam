@@ -30,18 +30,18 @@ jobs:
           unzip sam-cli.zip -d sam-installation
           sudo ./sam-installation/install --update  # Use --update to update the existing installation
 
-      # Step 4: Install Python 3.9 and dependencies
-      - name: Install Python 3.9 and pip
+      # Step 4: Install Python 3.8 and dependencies
+      - name: Install Python 3.8 and pip
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3.9 python3.9-distutils python3.9-dev
-          python3.9 -m ensurepip --upgrade
-          python3.9 -m pip install --upgrade pip
+          sudo apt-get install -y python3.8 python3.8-distutils python3.8-dev
+          python3.8 -m ensurepip --upgrade
+          python3.8 -m pip install --upgrade pip
 
       # Step 5: Install Python dependencies (boto3 and any other required packages)
       - name: Install Python dependencies
         run: |
-          python3.9 -m pip install boto3 -t ./eksamen-2024/samLambdaSt  # Installs boto3 to the specified SAM working directory
+          python3.8 -m pip install boto3 -t ./eksamen-2024/samLambdaSt  # Installs boto3 to the specified SAM working directory
 
       # Step 6: Build the SAM application
       - name: Build SAM Application
