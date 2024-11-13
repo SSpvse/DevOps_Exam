@@ -64,7 +64,7 @@ Resources:
     Properties:
       CodeUri: ./
       Handler: generate_image.lambda_handler
-      Runtime: python3.8
+      Runtime: python3.12
       Timeout: 600
       MemorySize: 512
       Role: !GetAtt ImageGenerationRole.Arn  # Reference the role here, but policies are attached separately
