@@ -39,7 +39,7 @@ jobs:
       # Step 5: Install Python dependencies (boto3 and any other required packages)
       - name: Install Python dependencies
         run: |
-          python3.8 -m pip install boto3 -t ./eksamen-2024/samLambdaSt  # Installs boto3 to the specified SAM working directory
+          python3.12 -m pip install boto3 -t ./eksamen-2024/samLambdaSt  # Installs boto3 to the specified SAM working directory
 
       # Step 6: Build the SAM application
       - name: Build SAM Application
