@@ -10,7 +10,9 @@ bedrock_client = boto3.client("bedrock-runtime", region_name="us-east-1")
 s3_client = boto3.client("s3")
 
 MODEL_ID = "amazon.titan-image-generator-v1"
-BUCKET_NAME =  os.environ["pgr301-couch-explorers"]
+BUCKET_NAME = os.environ["bucket_name"]
+CANDIDATE_NUMBER = os.environ["candidate_number"]
+
 
 def lambda_handler(event, context):
     # Loop through all SQS records in the event
@@ -18,7 +20,7 @@ def lambda_handler(event, context):
         # Extract the SQS message body
         prompt = record["body"]
         seed = random.randint(0, 2147483647)
-        s3_image_path = f"images/titan_{seed}.png"
+        s3_image_path = f"{CANDIDATE_NUMBER}/titan_{seed}.png"
         # Prepare the request for image generation
         native_request = {
             "taskType": "TEXT_IMAGE",
@@ -32,6 +34,8 @@ def lambda_handler(event, context):
                 "seed": seed,
             },
         }
+
+        print("Prompt being sent to Bedrock:", prompt)
 
         # Invoke the model
         response = bedrock_client.invoke_model(
