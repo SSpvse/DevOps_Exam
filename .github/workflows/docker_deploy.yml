@@ -28,7 +28,7 @@ jobs:
     - name: Build and push Docker image
       working-directory: eksamen-2024
       env:
-        DOCKER_REPO: stsp/sqs-client
+        DOCKER_REPO: ${{ secrets.DOCKER_USERNAME }}/sqs-client
       run: |
         docker build -t $DOCKER_REPO:${{ steps.get_sha.outputs.sha_short }} .
         docker push $DOCKER_REPO:${{ steps.get_sha.outputs.sha_short }}
