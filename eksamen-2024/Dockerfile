@@ -1,7 +1,8 @@
 # Stage 1: Build the Java application
 FROM maven:3.8.5-openjdk-17 AS builder
 WORKDIR /app
-COPY eksamen-2024/java_sqs_client .
+COPY eksamen-2024/java_sqs_client/pom.xml .
+COPY eksamen-2024/java_sqs_client/src ./src
 RUN mvn clean package
 
 # Stage 2: Create the runtime image
