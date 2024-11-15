@@ -24,6 +24,7 @@ jobs:
       id: get_sha
       run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
+# comment
     - name: Build and push Docker image
       working-directory: eksamen-2024/
       env:
