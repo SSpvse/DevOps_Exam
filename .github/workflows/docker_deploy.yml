@@ -25,6 +25,7 @@ jobs:
       run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
     - name: Build and push Docker image
+      working-directory: eksamen-2024/java_sqs_client/
       env:
         DOCKER_REPO: stsp/sqs-client
       run: |
