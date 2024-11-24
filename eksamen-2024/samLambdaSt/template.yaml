@@ -65,9 +65,9 @@ Resources:
       CodeUri: ./
       Handler: generate_image.lambda_handler
       Runtime: python3.12
-      Timeout: 600
-      MemorySize: 512
-      Role: !GetAtt ImageGenerationRole.Arn  # Reference the role here, but policies are attached separately
+      Timeout: 60
+      MemorySize: 1024
+      Role: !GetAtt ImageGenerationRole.Arn
       Environment:
         Variables:
           BUCKET_NAME: pgr301-couch-explorers
