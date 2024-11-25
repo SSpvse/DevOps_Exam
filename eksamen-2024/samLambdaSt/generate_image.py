@@ -29,10 +29,9 @@ def lambda_handler(event, context):
     # Generate a random seed for the image generation
     seed = random.randint(0, 2147483647)
 
-    # Adjust the S3 path to include the candidate number (e.g., "71/") for organization
     s3_image_path = f"{candidate_number}/titan_{seed}.png"  # Candidate-specific folder
 
-    # Build the request body for Bedrock image generation
+    # Build the request body for bedrock image generation
     native_request = {
         "taskType": "TEXT_IMAGE",
         "textToImageParams": {"text": prompt},
@@ -51,7 +50,7 @@ def lambda_handler(event, context):
         response = bedrock_client.invoke_model(modelId=model_id, body=json.dumps(native_request))
         model_response = json.loads(response["body"].read())
 
-        # Extract and decode the Base64 image data
+        # Extract & decode the base64 image data
         base64_image_data = model_response["images"][0]
         image_data = base64.b64decode(base64_image_data)
 
@@ -66,7 +65,7 @@ def lambda_handler(event, context):
         }
 
     except Exception as e:
-        # Handle any errors that occur during the process
+        # Handle any errors that happen during the process
         return {
             'statusCode': 500,
             'body': json.dumps({'message': 'Failed to generate image', 'error': str(e)})

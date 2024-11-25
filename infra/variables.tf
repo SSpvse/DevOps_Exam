@@ -20,5 +20,5 @@ variable "notification_email" {
 variable "alarm_threshold" {
   description = "The threshold (in seconds) for waiting time of images in the queue"
   type        = number
-  default     = 30
+  default     = 5
 }

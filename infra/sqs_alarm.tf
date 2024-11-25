@@ -1,7 +1,13 @@
 
+
 resource "aws_sqs_queue" "image_generation_queue" {
   name                      = "${var.prefix}_image-generation-queue"
+  delay_seconds             = 0
+  max_message_size          = 2048
+  message_retention_seconds = 86400
+  receive_wait_time_seconds = 10
   visibility_timeout_seconds = 60
+
 }
 
 resource "aws_cloudwatch_metric_alarm" "sqs_age_alarm" {
