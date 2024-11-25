@@ -38,7 +38,7 @@ resource "aws_lambda_function" "image_generation_lambda" {
 resource "aws_lambda_event_source_mapping" "sqs_lambda_trigger" {
   event_source_arn = aws_sqs_queue.image_generation_queue.arn
   function_name    = aws_lambda_function.image_generation_lambda.arn
-  batch_size       = 10
+  batch_size       = 3
   enabled          = true
 }
 

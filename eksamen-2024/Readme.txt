@@ -1,5 +1,7 @@
-sqs url:
+sqs-queue url:
 https://sqs.eu-west-1.amazonaws.com/244530008913/stsp_71_image-generation-queue
+
+link to GitHub Actions workflow:
 
 aws sqs send-message --queue-url https://sqs.eu-west-1.amazonaws.com/244530008913/stsp_71_image-generation-queue --message-body "cat riding a bear with christmas hat, in a cartoonie style"
 
