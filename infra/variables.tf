@@ -1,3 +1,4 @@
+# So i can tag my name when naming stuff
 variable "prefix" {
   type        = string
   description = "Prefix for all resource names"
@@ -14,11 +15,11 @@ variable "s3_bucket_name" {
 variable "notification_email" {
   description = "The email address to send alarm notifications to."
   type        = string
-  default = "stsp003@student.kristiania.no"
+  default = "stsp003@student.kristiania.no"     # E-Mail for the notifications when threshold is exceeded  (4th exersice)
 }
 
 variable "alarm_threshold" {
   description = "The threshold (in seconds) for waiting time of images in the queue"
   type        = number
-  default     = 5
+  default     = 5  # Threshold for the oldest messages queue metrics, in seconds (4th exersice)
 }

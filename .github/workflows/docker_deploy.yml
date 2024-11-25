@@ -24,7 +24,7 @@ jobs:
       id: get_sha
       run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
-# comment
+# Tagging the docker images, making two of them one with latest and the other with the github actions sha code for identifying the commit with the docker image version
     - name: Build and push Docker image
       working-directory: eksamen-2024
       env:
